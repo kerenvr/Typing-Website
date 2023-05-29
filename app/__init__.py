@@ -1,8 +1,11 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+import os
+import random
+import string
 from os import path
+
+from flask import Flask
 from flask_login import LoginManager
-import os, string, random
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -18,20 +21,20 @@ def create_database(app):
 def secret_key(app):
     SECRET_KEY  = os.getenv('SECRET_KEY')
     if not SECRET_KEY:
-        SECRET_KEY = ''.join(random.choice( string.ascii_lowercase  ) for i in range( 32 ))
+        SECRET_KEY = ''.join(random.choice(string.ascii_lowercase) for i in range(32))
     app.config['SECRET_KEY'] = SECRET_KEY
-
-
 
 def create_app():
     app = Flask(__name__)
     secret_key(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    db.init_app(app)
+    create_database(app)
 
-    #from .authentication.views import auth as authentication_blueprint
+    from .authentication.views import auth as authentication_blueprint
     from .home.views import views
 
-    #app.register_blueprint(authentication_blueprint, url_prefix='/')
+    app.register_blueprint(authentication_blueprint, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')
 
     #login_manager = LoginManager()
