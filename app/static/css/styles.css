@@ -196,3 +196,8 @@ div h1{
     .holder .login-button:active {
         border-style: dotted;
     }
+.error{
+    color: red;
+    font-family: 'Inter';
+    font-size:12px;
+}

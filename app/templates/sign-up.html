@@ -1,7 +1,14 @@
 {% extends "base.html" %} {% block title %}Sign-up{% endblock %} {% block
 content %}
 <form method="POST">
+</div>
   <div class="holder">
+    {% with errors = get_flashed_messages(category_filter=["error"]) %} {% if
+      errors %}
+      {%- for msg in errors %}
+    <div class="alert-message block-message error">{{ msg }}</div>
+    {% endfor -%}
+    {% endif %} {% endwith %}
     <h2 class="welcomeHeader" id="welcomeHeader" tabindex="-1">Sign Up</h2>
     <div class="form-group">
       <input
